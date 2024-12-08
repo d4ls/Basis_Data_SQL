@@ -236,43 +236,59 @@ yaitu:
 
 1.  Tipe Data untuk Bilangan (Number)
 
-|    Type Data    |                                                                                        Keterangan                                                                                        |
-|:---------------------------------:|:-----------------------------------:|
-|     TINYINT     |  Ukuran 1 byte. Bilangan bulat terkecil, dengan jangkauan untuk bilangan bertanda: -128 s/d 127 dan untuk yang tidak bertanda : 0 s/d 255. Bilangan tak bertandai dengan kata UNSIGNED   |
-|    SMALLINT     |                          Ukuran 2 Byte. Bilangan bulat dengan jangkauan untuk bilangan bertanda : -32768 s/d 32767 dan untuk yang tidak bertanda : 0 s/d 65535                           |
-|    MEDIUMINT    |                       Ukuran 3 byte. Bilangan bulat dengan jangkauan untuk bilangan bertanda : -8388608 s/d 8388607 dan untuk yang tidak bertanda : 0 s/d 16777215                       |
-|       INT       |                   Ukuran 4 byte. Bilangan bulat dengan jangkauan untuk bilangan bertanda : -2147483648 s/d 2147483647 dan untuk yang tidak bertanda : 0 s/d 4294967295                   |
-|     INTEGER     |                                                                             Ukuran 4 byte. Sinonim dari int                                                                              |
-|     BIGINT      | Ukuran 8 byte. Bilangan bulat terbesar dengan jangkauan untuk bilangan bertanda : -9223372036854775808 s/d 9223372036854775807 dan untuk yang tidak bertanda : 0 s/d 1844674473709551615 |
-|      FLOAT      |                                                                             Ukuran 4 byte. Bilangan pecahan                                                                              |
-|     DOUBLE      |                                                                             Ukuran 8 byte. Bilangan pecahan                                                                              |
-| DOUBLEPRECISION |                                                                             Ukuran 8 byte. Bilangan pecahan                                                                              |
-|      REAL       |                                                                            Ukuran 8 byte. Sinonim dari DOUBLE                                                                            |
-|  DECIMAL (M,D)  |                                     Ukuran M byte. Bilangan pecahan, misalnya DECIMAL(5,2 dapat digunakan untuk menyimpan bilangan -99,99 s/d 99,99                                      |
-|  NUMERIC (M,D)  |                                   Ukuran M byte. Sinonim dari DECIMAL, misalnya NUMERIC(5,2) dapat digunakan untuk menyimpan bilangan -99,99 s/d 99,99                                   |
+|    Type Data    |                                            Keterangan                                               |
+|:---------------:|:---------------------------------------------------------------------------------------------------:|
+|     TINYINT     |  Ukuran 1 byte. Bilangan bulat terkecil, dengan jangkauan untuk bilangan bertanda: -128 s/d 127 dan 
+                     untuk yang tidak bertanda : 0 s/d 255. Bilangan tak bertandai dengan kata UNSIGNED                 |
+|    SMALLINT     |  Ukuran 2 Byte. Bilangan bulat dengan jangkauan untuk bilangan bertanda : -32768 s/d 32767 dan 
+                     untuk yang tidak bertanda : 0 s/d 65535                                                            |
+|    MEDIUMINT    |  Ukuran 3 byte. Bilangan bulat dengan jangkauan untuk bilangan bertanda : -8388608 s/d 8388607 dan 
+                     untuk yang tidak bertanda : 0 s/d 16777215                                                         |
+|       INT       |  Ukuran 4 byte. Bilangan bulat dengan jangkauan untuk bilangan bertanda : -2147483648 s/d
+                     2147483647 dan untuk yang tidak bertanda : 0 s/d 4294967295                                        |
+|     INTEGER     |  Ukuran 4 byte. Sinonim dari int                                                                    |
+|     BIGINT      |  Ukuran 8 byte. Bilangan bulat terbesar dengan jangkauan untuk bilangan bertanda : 
+                     -9223372036854775808 s/d 9223372036854775807 dan untuk yang tidak bertanda :
+                     0 s/d 1844674473709551615                                                                          |
+|      FLOAT      |  Ukuran 4 byte. Bilangan pecahan                                                                    |
+|     DOUBLE      |  Ukuran 8 byte. Bilangan pecahan                                                                    |
+| DOUBLEPRECISION |  Ukuran 8 byte. Bilangan pecahan                                                                    |
+|      REAL       |  Ukuran 8 byte. Sinonim dari DOUBLE                                                                 |
+|  DECIMAL (M,D)  |  Ukuran M byte. Bilangan pecahan, misalnya DECIMAL(5,2 dapat digunakan untuk menyimpan bilangan 
+                     -99,99 s/d 99,99                                                                                   |
+|  NUMERIC (M,D)  |  Ukuran M byte. Sinonim dari DECIMAL, misalnya NUMERIC(5,2) dapat digunakan untuk menyimpan 
+                     bilangan -99,99 s/d 99,99                                                                          |
 
 2.  Tipe Data untuk Tanggal dan Jam
 
-| Type Data |                                                   Keterangan                                                    |
-|:---------------------------------:|:-----------------------------------:|
-| DATETIME  | Ukuran 8 byte. Kombinasi tanggal dan jam, dengan jangkauan dari '1000-01-01 00:00:00' s/d '9999-12-31 23:59:59' |
-|   DATE    |                   Ukuran 3 Byte. Tanggal dengan jangkauan dari '1000-01-01' s/d '9999-12-31'                    |
-| TIMESTAMP |        Ukuran 4 byte. Kombinasi tanggal dan jam, dengan jangkauan dari '1970-01-01 00:00:00' s/d '2037'         |
-|   TIME    |                     Ukuran 3 byte. Waktu dengan jangkauan dari '839:59:59' s/d '838:59:59'                      |
-|   YEAR    |                                 Ukuran 1 byte. Data tahun antara 1901 s/d 2155                                  |
+| Type Data |                               Keterangan                                                |
+|:---------:|:---------------------------------------------------------------------------------------:|
+| DATETIME  | Ukuran 8 byte. Kombinasi tanggal dan jam, dengan jangkauan dari '1000-01-01 00:00:00'
+              s/d '9999-12-31 23:59:59'                                                               |
+|   DATE    | Ukuran 3 Byte. Tanggal dengan jangkauan dari '1000-01-01' s/d '9999-12-31'              |
+| TIMESTAMP | Ukuran 4 byte. Kombinasi tanggal dan jam, dengan jangkauan dari '1970-01-01 00:00:00' 
+              s/d '2037'                                                                              |
+|   TIME    | Ukuran 3 byte. Waktu dengan jangkauan dari '839:59:59' s/d '838:59:59'                  |
+|   YEAR    | Ukuran 1 byte. Data tahun antara 1901 s/d 2155                                          |
 
 3.  Tipe Data untuk Karakter
 
-|              Type Data               |                                                                  Keterangan                                                                   |
-|:---------------------------------:|:-----------------------------------:|
-|                 CHAR                 |         Mampu menangani data hingga 255 karakter. Tipe data CHAR mengharuskan untuk memasukkan data yang telah ditentukan oleh kita.          |
-|               VARCHAR                |     Mampu menangani data hingga 255 karakter. Tipe data VARCHAR tidak mengharuskan untuk memasukkan data yang telah ditentukan oleh kita.     |
-|          TINYBLOB, TINYTEXT          |                                           Ukuran 255 byte. Mampu menangani data sampai 2\^8-1 data.                                           |
-|              BLOB, TEXT              |                             Ukuran 65535 byte. Type string yang mampu menangani data hingga 2\^16-1 (16M-1) data.                             |
-|        MEDIUMBLOB, MEDIUMTEXT        |                                    Ukuran 16777215 byte. Mampu menyimpan data hingga 2\^24-1 (16M-1)data.                                     |
-|          LONGBLOB, LONGTEXT          | Ukuran 4294967295 byte. Mampu menyimpan data hingga berukuran GIGA BYTE. Tipe data ini memiliki batas penyimpanan hingga 2\^32-1 (4G-1) data. |
-| ENUM('nilai1','nilai2',...,'nilaiN') |                               Ukuran 1 atau 2 byte. Tergantung jumlah nilai enumerasinya (maksimum 65535 nilai)                               |
-| SET('nilai1','nilai2',...,'nilaiN')  |                                 1,2,3,4 atau 8 byte, tergantung jumlah anggota himpunan (maksimum 64 anggota)                                 |
+|              Type Data               |                                  Keterangan                                     |
+|:------------------------------------:|:-------------------------------------------------------------------------------:|
+|                 CHAR                 |  Mampu menangani data hingga 255 karakter. Tipe data CHAR mengharuskan untuk 
+                                          memasukkan data yang telah ditentukan oleh kita.                               |
+|               VARCHAR                |  Mampu menangani data hingga 255 karakter. Tipe data VARCHAR tidak mengharuskan 
+                                          untuk memasukkan data yang telah ditentukan oleh kita.                         |
+|          TINYBLOB, TINYTEXT          |  Ukuran 255 byte. Mampu menangani data sampai 2\^8-1 data.                      |
+|              BLOB, TEXT              |  Ukuran 65535 byte. Type string yang mampu menangani data hingga 
+                                          2\^16-1 (16M-1) data.                                                          |
+|        MEDIUMBLOB, MEDIUMTEXT        |  Ukuran 16777215 byte. Mampu menyimpan data hingga 2\^24-1 (16M-1)data.         |
+|          LONGBLOB, LONGTEXT          |  Ukuran 4294967295 byte. Mampu menyimpan data hingga berukuran GIGA BYTE. 
+                                          Tipe data ini memiliki batas penyimpanan hingga 2\^32-1 (4G-1) data.           |
+| ENUM('nilai1','nilai2',...,'nilaiN') |  Ukuran 1 atau 2 byte. Tergantung jumlah nilai enumerasinya 
+                                          (maksimum 65535 nilai)                                                         |
+| SET('nilai1','nilai2',...,'nilaiN')  |  1,2,3,4 atau 8 byte, tergantung jumlah anggota himpunan 
+                                          (maksimum 64 anggota)                                                          |
 :::
 
 # BAB III : Data Base Management System (DBMS)
