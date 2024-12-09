@@ -258,13 +258,14 @@ yaitu:[[6]](https://repository.dinus.ac.id/docs/ajar/materi_1.pdf)
                   -9223372036854775808 s/d 9223372036854775807 dan untuk 
                   yang tidak bertanda : 0 s/d 1844674473709551615               |
 ```
-
-|      FLOAT \| Ukuran 4 byte. Bilangan pecahan \|
-|     DOUBLE \| Ukuran 8 byte. Bilangan pecahan \|
-| DOUBLEPRECISION \| Ukuran 8 byte. Bilangan pecahan \|
-|      REAL \| Ukuran 8 byte. Sinonim dari DOUBLE \|
-|  DECIMAL (M,D) \| Ukuran M byte. Bilangan pecahan, misalnya DECIMAL(5,2 dapat digunakan untuk menyimpan bilangan -99,99 s/d 99,99 \|
-|  NUMERIC (M,D) \| Ukuran M byte. Sinonim dari DECIMAL, misalnya NUMERIC(5,2) dapat digunakan untuk menyimpan bilangan -99,99 s/d 99,99 \|
+| Type Data | Keterangan |
+|:---------:|:----------:|
+|      FLOAT | Ukuran 4 byte. Bilangan pecahan |
+|     DOUBLE | Ukuran 8 byte. Bilangan pecahan |
+| DOUBLEPRECISION | Ukuran 8 byte. Bilangan pecahan |
+|      REAL | Ukuran 8 byte. Sinonim dari DOUBLE |
+|  DECIMAL (M,D) | Ukuran M byte. Bilangan pecahan, misalnya DECIMAL(5,2 dapat digunakan untuk menyimpan bilangan -99,99 s/d 99,99 |
+|  NUMERIC (M,D) | Ukuran M byte. Sinonim dari DECIMAL, misalnya NUMERIC(5,2) dapat digunakan untuk menyimpan bilangan -99,99 s/d 99,99 |
 
 
 2.  Tipe Data untuk Tanggal dan Jam
