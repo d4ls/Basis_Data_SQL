@@ -150,7 +150,7 @@ yaitu:
 2.  Create Table : Digunakan untuk membuat tabel data baru dalam sebuah
     database.
 
-![](images/bs2.jpg)
+    ![](images/bs2.jpg)
 
 3.  Insert Into : Digunakan untuk menambahkan data baru di tabel
     database.
@@ -189,10 +189,10 @@ DESC: Untuk pengurutan menurun (descending)
     beberapa tabel yang memiliki hubungan, biasanya dengan menggunakan
     kolom yang sama atau berelasi, seperti primary key dan foreign key.
 
-![](images/bs7-01.jpg)
+    ![](images/bs7-01.jpg)
 
-JOIN: Kata kunci untuk menggabungkan tabel. ON: Menentukan kondisi
-penggabungan, yaitu kolom yang menghubungkan kedua tabel
+    JOIN: Kata kunci untuk menggabungkan tabel. ON: Menentukan kondisi
+    penggabungan, yaitu kolom yang menghubungkan kedua tabel
 
 2.  Inner Join
 
@@ -266,6 +266,7 @@ yaitu:[[6]](https://repository.dinus.ac.id/docs/ajar/materi_1.pdf)
 |  DECIMAL (M,D) \| Ukuran M byte. Bilangan pecahan, misalnya DECIMAL(5,2 dapat digunakan untuk menyimpan bilangan -99,99 s/d 99,99 \|
 |  NUMERIC (M,D) \| Ukuran M byte. Sinonim dari DECIMAL, misalnya NUMERIC(5,2) dapat digunakan untuk menyimpan bilangan -99,99 s/d 99,99 \|
 
+
 2.  Tipe Data untuk Tanggal dan Jam
 
 |         Type Data         |                                      Keterangan                                       |
@@ -277,6 +278,7 @@ yaitu:[[6]](https://repository.dinus.ac.id/docs/ajar/materi_1.pdf)
 |        s/d '2037'         |                                                                                       |
 |           TIME            |        Ukuran 3 byte. Waktu dengan jangkauan dari '839:59:59' s/d '838:59:59'         |
 |           YEAR            |                    Ukuran 1 byte. Data tahun antara 1901 s/d 2155                     |
+
 
 3.  Tipe Data untuk Karakter
 
@@ -353,7 +355,7 @@ SQL dibagi menjadi dua, yaitu:
 
         ![](images/Screenshot%202024-12-07%20193136.png){width="340"}
 
-3.  Data Control Languange (DCL)
+3.  ***Data Control Languange*** ***(DCL)***
 
     DCL adalah sebuah metode Query SQL yang digunakan untuk memberikan
     hak otorisasi mengakses Database, mengalokasikan space,
