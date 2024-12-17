@@ -199,6 +199,7 @@ CREATE TABLE jurusan (
 3.  **Insert Into** : Digunakan untuk menambahkan data baru di tabel
     database.
 
+<<<<<<< HEAD
 ```{r, echo=TRUE}
 #MEMASUKAN DATA KE DALAM TABEL
 tbl_mhs_nw <- "
@@ -213,6 +214,9 @@ VALUES (1007, 'Gempita', null),
 VALUES (1008, 'Helga', 'Cilegon');
 "
 print(tbl_mhs_nw)
+=======
+    ![](images/bs2.jpg)
+>>>>>>> 83d978c3739727a823875a146d9113b1d8c88789
 
 #MEMASUKAN DATA KE DALAM TABEL
 tbl_jrs_nw <- "
@@ -314,7 +318,18 @@ print(jurusan_desc)
 
 ### Menggabungkan tabel
 
+<<<<<<< HEAD
 1.  **INNER JOIN** adalah jenis join dalam SQL yang digunakan untuk
+=======
+    ![](images/bs7-01.jpg)
+
+    JOIN: Kata kunci untuk menggabungkan tabel. ON: Menentukan kondisi
+    penggabungan, yaitu kolom yang menghubungkan kedua tabel
+
+2.  Inner Join
+
+    INNER JOIN adalah jenis join dalam SQL yang digunakan untuk
+>>>>>>> 83d978c3739727a823875a146d9113b1d8c88789
     menggabungkan data dari dua tabel berdasarkan kecocokan di antara
     kolom yang terkait. INNER JOIN hanya akan menampilkan baris-baris
     yang memiliki kecocokan di kedua tabel; baris yang tidak memiliki
@@ -422,7 +437,16 @@ yaitu:
 ```         
                               
 ```
+| Type Data | Keterangan |
+|:---------:|:----------:|
+|      FLOAT | Ukuran 4 byte. Bilangan pecahan |
+|     DOUBLE | Ukuran 8 byte. Bilangan pecahan |
+| DOUBLEPRECISION | Ukuran 8 byte. Bilangan pecahan |
+|      REAL | Ukuran 8 byte. Sinonim dari DOUBLE |
+|  DECIMAL (M,D) | Ukuran M byte. Bilangan pecahan, misalnya DECIMAL(5,2 dapat digunakan untuk menyimpan bilangan -99,99 s/d 99,99 |
+|  NUMERIC (M,D) | Ukuran M byte. Sinonim dari DECIMAL, misalnya NUMERIC(5,2) dapat digunakan untuk menyimpan bilangan -99,99 s/d 99,99 |
 
+<<<<<<< HEAD
 |    Type Data    |                                                      Keterangan                                                      |
 |:------------:|:-------------------------------------------------------:|
 |      FLOAT      |                                           Ukuran 4 byte. Bilangan pecahan                                            |
@@ -431,6 +455,8 @@ yaitu:
 |      REAL       |                                          Ukuran 8 byte. Sinonim dari DOUBLE                                          |
 |  DECIMAL (M,D)  |   Ukuran M byte. Bilangan pecahan, misalnya DECIMAL(5,2 dapat digunakan untuk menyimpan bilangan -99,99 s/d 99,99    |
 |  NUMERIC (M,D)  | Ukuran M byte. Sinonim dari DECIMAL, misalnya NUMERIC(5,2) dapat digunakan untuk menyimpan bilangan -99,99 s/d 99,99 |
+=======
+>>>>>>> 83d978c3739727a823875a146d9113b1d8c88789
 
 2.  **Tipe Data untuk Tanggal dan Jam**
 
@@ -444,7 +470,12 @@ yaitu:
 |   TIME    |                     Ukuran 3 byte. Waktu dengan jangkauan dari '839:59:59' s/d '838:59:59'                      |
 |   YEAR    |                                 Ukuran 1 byte. Data tahun antara 1901 s/d 2155                                  |
 
+<<<<<<< HEAD
 3.  **Tipe Data untuk Karakter**
+=======
+
+3.  Tipe Data untuk Karakter
+>>>>>>> 83d978c3739727a823875a146d9113b1d8c88789
 
 |              Type Data               |                                                                  Keterangan                                                                   |
 |:---------------:|:-----------------------------------------------------:|
@@ -551,6 +582,7 @@ VALUES (1008, 'Helga', 'Cilegon');
 "
 print(tbl_mhs_nw)
 
+<<<<<<< HEAD
 #UPDATE
 #MENGUPDATE DATA PADA TABEL
 query <- "
@@ -565,6 +597,8 @@ print(query)
 dbExecute(basis, "DELETE FROM mahasiswa WHERE id = 1001")
 ```
 
+=======
+>>>>>>> 83d978c3739727a823875a146d9113b1d8c88789
 3.  ***Data Control Languange*** ***(DCL)***
 
     DCL adalah sebuah metode Query SQL yang digunakan untuk memberikan
