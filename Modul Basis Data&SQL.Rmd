@@ -1,11 +1,16 @@
 ---
-title: "Modul Basis Data&SQL"
+title: "Modul Basis Data & SQL"
 author: "Dinda Dwi Anugrah Pertiwi & Kinanthi Trah Asmaraningtyas"
-output: html_document
-editor_options: 
-  markdown: 
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+editor_options:
+  markdown:
     wrap: 72
 ---
+
+![](images/BASIS%20DATA.png)
 
 # BAB I BASIS DATA
 
@@ -22,8 +27,7 @@ sistematis menggunakan program komputer. Istilah ***"basis"*** mengacu
 pada gudang atau tempat penyimpanan, sedangkan ***"data"*** merujuk pada
 fakta-fakta yang dikumpulkan. Dengan menggunakan basis data, pengguna
 dapat menyimpan informasi dalam media lain dan mengaksesnya kembali
-ketika
-diperlukan.[[1]](https://fikti.umsu.ac.id/pengertian-basis-data-komponen-fungsi-dan-tujuannya/)
+ketika diperlukan.
 :::
 
 ## Komponen Basis Data
@@ -60,8 +64,7 @@ Komponen-komponen dari basis data terdiri dari:
     dengan basis data untuk menyediakan fungsionalitas tambahan.
     Aplikasi ini dapat berupa program khusus yang dibangun untuk
     keperluan tertentu atau aplikasi umum yang menggunakan basis data
-    sebagai sumber data
-    mereka.[[1]](https://fikti.umsu.ac.id/pengertian-basis-data-komponen-fungsi-dan-tujuannya/)
+    sebagai sumber data mereka.
 :::
 
 # BAB II MySQL
@@ -82,8 +85,7 @@ biasa kita gunakan adalah MySQL free software yang memiliki lisensi
 keperluan pribadi ataupun untuk komersial secara gratis. MySQL biasa
 digunakan untuk menyimpan berbagai data dalam database yang data-datanya
 dapat dimanipulasi sesuai keperluan. Manipulasi data tersebut berupa
-menambah, mengubah dan menghapus data yang berada di dalam
-database.[[2]](https://dqlab.id/kelebihan-dan-kekurangan-mysql-yang-harus-diketahui-oleh-praktisi-data)
+menambah, mengubah dan menghapus data yang berada di dalam database.
 :::
 
 ## Kelebihan
@@ -113,8 +115,7 @@ lainnya, yaitu:
     dll.
 
 7.  **Struktur tabel fleksibel :** MySQL memiliki struktur tabel yang
-    mudah dipakai dan
-    fleksibel.[[3]](https://www.biznetgio.com/news/apa-itu-mysql)
+    mudah dipakai dan fleksibel.
 :::
 
 ## Kekurangan
@@ -134,100 +135,264 @@ yaitu:
 
 3.  **Kurang bagus dari segi technical support :** MySQL tidak memiliki
     technical support untuk komunitas, sedangkan pengguna *Enterprise*
-    tersedia technical support dan
-    berbayar.[[3]](https://www.biznetgio.com/news/apa-itu-mysql)
+    tersedia technical support dan berbayar.
 :::
 
 ## Fungsi-fungsi
 
 ::: {style="text-align: justify;"}
-### Membuat dan memasukkan data pada tabel [[4]](https://codesaya.com/a/sintaks-mysql-database-pkdhihbgzx/)
+### Membuat dan memasukkan data pada tabel
 
-1.  Create Database : Digunakan untuk membuat database baru
+1.  **Create Database** : Digunakan untuk membuat database baru
 
-    ![](images/bs1.jpg)
+```{r, echo=FALSE}
+library(RMySQL)
+basis<- dbConnect(RMySQL::MySQL(),
+                 user = "root",
+                 password = "138910",
+                 port = 3307,
+                 dbname = "basis",
+                 host = "localhost")
 
-2.  Create Table : Digunakan untuk membuat tabel data baru dalam sebuah
+# Cek daftar tabel dalam database
+tabel <- dbListTables(basis)
+print(tabel)
+
+# Memeriksa database yang sedang aktif
+dbGetQuery(basis, "SELECT DATABASE();")
+
+```
+
+```{r, echo=TRUE}
+library(DBI)
+library(RMySQL)
+
+#MEMBUAT DATABASE BARU
+dbExecute(basis, "CREATE DATABASE IF NOT EXISTS `be19`")
+
+#MENGGUNAKAN DATABASE BARU
+dbExecute(basis,"USE `be19`")
+```
+
+2.  **Create Table** : Digunakan untuk membuat tabel data baru dalam
+    sebuah database.
+
+```{r, echo=TRUE}
+#MEMBUAT TABEL MAHASISWA
+dbExecute(basis, "
+  CREATE TABLE Mahasiswa (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama VARCHAR(100),
+    asal VARCHAR(100)
+  )
+")
+
+#MEMBUAT TABEL JURUSAN
+dbExecute(basis, "
+CREATE TABLE jurusan (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama_jurusan VARCHAR(100)
+)
+")
+```
+
+3.  **Insert Into** : Digunakan untuk menambahkan data baru di tabel
     database.
 
-![](images/bs2.jpg)
+```{r, echo=TRUE}
+#MEMASUKAN DATA KE DALAM TABEL
+tbl_mhs_nw <- "
+INSERT INTO Mahasiswa (id, nama, asal)
+VALUES (1001, 'Asep','Serang'),
+VALUES (1002, 'Beben', 'Serang'),
+VALUES (1003, 'Chintia', 'Cilegon'),
+VALUES (1004, 'Dadang', 'Tangerang'),
+VALUES (1005, 'Edi', null),
+VALUES (1006, 'Feby', 'Pandeglang'),
+VALUES (1007, 'Gempita', null),
+VALUES (1008, 'Helga', 'Cilegon');
+"
+print(tbl_mhs_nw)
 
-3.  Insert Into : Digunakan untuk menambahkan data baru di tabel
+#MEMASUKAN DATA KE DALAM TABEL
+tbl_jrs_nw <- "
+INSERT INTO jurusan (id, nama_jurusan)
+VALUES (1001, 'Teknik Mesin'),
+VALUES (1002, 'Administrasi Publik'),
+VALUES (1003, 'Statistika'),
+VALUES (1004, 'Statistika'),
+VALUES (1005,  null),
+VALUES (1006, 'Peternakan'),
+VALUES (1007,  null),
+VALUES (1008, 'Informatika');
+"
+print(tbl_jrs_nw)
+```
+
+4.  **Select** : Digunakan untuk memilih table dari database.
+
+```{r echo=TRUE, message=FALSE}
+library(DBI)
+library(RMySQL)
+
+#MELIHAT TABEL DALAM DATABASE
+tabel<- dbListTables(basis)
+print(tabel)
+
+#MELIHAT TABEL
+df_mhs <- dbGetQuery(basis, "SELECT * FROM Mahasiswa")
+print(df_mhs)
+
+df_jrs <- dbGetQuery(basis, "SELECT * FROM jurusan")
+print(df_jrs)
+```
+
+5.  **Update** : Digunakan untuk mengubah/memperbarui data di tabel
     database.
 
-    ![](images/bs3.jpg)
+```{r, echo=TRUE}
+#MENGUPDATE DATA PADA TABEL
+query1 <- "
+UPDATE Mahasiswa
+SET asal = 'Lebak'
+WHERE id IN (1005, 1007);
+"
+print(query1)
 
-4.  Select : Digunakan untuk memilih table dari database.
+query2 <- "
+UPDATE jurusan
+SET nama_jurusan = 'Psikolog'
+WHERE id IN (1005, 1007);
+"
+print(query2)
+```
 
-    ![](images/bs4.jpg)
+6.  **Where** : Digunakan untuk memfilter data pada perintah Select
 
-5.  Update : Digunakan untuk mengubah/memperbarui data di tabel
-    database.
+```{r, echo=TRUE}
+#MENGUPDATE DATA PADA TABEL
+query3 <- "
+UPDATE Mahasiswa
+SET asal = 'Lebak'
+WHERE id IN (1005, 1007);
+"
+print(query3)
 
-    ![](images/bs5.jpg)
+query4 <- "
+UPDATE jurusan
+SET nama_jurusan = 'Psikolog'
+WHERE id IN (1005, 1007);
+"
+print(query4)
+```
 
-6.  Where : Digunakan untuk memfilter data pada perintah Select
+### Mengurutkan Data
 
-    ![](images/bs5-01.jpg)
+1.  **ORDER BY**: Menentukan kolom yang menjadi dasar pengurutan.
 
-### Mengurutkan Data [[5]](https://spada.untirta.ac.id/pluginfile.php/1042578/mod_resource/content/1/Menambah-Kolom%2C-Mengurutkan%2C-Menggabungkan-Tabel.pdf)
+2.  **ASC**: Untuk pengurutan menaik (ascending). Ini adalah pengurutan
+    default, dapat diabaikan jika ingin menaik.
 
-ORDER BY: Menentukan kolom yang menjadi dasar pengurutan.
+3.  **DESC**: Untuk pengurutan menurun (descending)
 
-ASC: Untuk pengurutan menaik (ascending). Ini adalah pengurutan default,
-dapat diabaikan jika ingin menaik.
+```{r, echo=TRUE}
+#MENGURUTKAN DATA
+#ASC
+nama_asc<- "SELECT * FROM Mahasiswa ORDER BY nama ASC"
+print(nama_asc)
 
-DESC: Untuk pengurutan menurun (descending)
+jurusan_asc<- "SELECT * FROM jurusan ORDER BY nama_jurusan ASC"
+print(jurusan_asc)
 
-![](images/bs6.jpg)
+#DESC
+nama_desc<- "SELECT * FROM Mahasiswa ORDER BY nama DESC"
+print(nama_desc)
 
-### Menggabungkan tabel [[5]](https://spada.untirta.ac.id/pluginfile.php/1042578/mod_resource/content/1/Menambah-Kolom%2C-Mengurutkan%2C-Menggabungkan-Tabel.pdf)
+jurusan_desc<- "SELECT * FROM jurusan ORDER BY nama DESC"
+print(jurusan_desc)
+```
 
-1.  JOIN adalah perintah dalam SQL yang digunakan untuk menggabungkan
-    baris dari dua atau lebih tabel berdasarkan kolom terkait antara
-    tabel-tabel tersebut. Fungsinya adalah untuk mengumpulkan data dari
-    beberapa tabel yang memiliki hubungan, biasanya dengan menggunakan
-    kolom yang sama atau berelasi, seperti primary key dan foreign key.
+### Menggabungkan tabel
 
-![](images/bs7-01.jpg)
-
-JOIN: Kata kunci untuk menggabungkan tabel. ON: Menentukan kondisi
-penggabungan, yaitu kolom yang menghubungkan kedua tabel
-
-2.  Inner Join
-
-    INNER JOIN adalah jenis join dalam SQL yang digunakan untuk
+1.  **INNER JOIN** adalah jenis join dalam SQL yang digunakan untuk
     menggabungkan data dari dua tabel berdasarkan kecocokan di antara
     kolom yang terkait. INNER JOIN hanya akan menampilkan baris-baris
     yang memiliki kecocokan di kedua tabel; baris yang tidak memiliki
     pasangan di tabel lain tidak akan ditampilkan
 
-    ![](images/bs8.jpg)
+```{r, echo=TRUE}
+query_inner <- "
+SELECT Mahasiswa.id, Mahasiswa.nama, jurusan.nama_jurusan
+FROM Mahasiswa
+INNER JOIN jurusan
+ON Mahasiswa.id_jurusan = jurusan.id;
+"
+mahasiswa_struct <- dbGetQuery(basis, "DESCRIBE Mahasiswa")
+print(mahasiswa_struct)
+```
 
-3.  LEFT JOIN (atau LEFT OUTER JOIN) adalah jenis join dalam SQL yang
-    digunakan untuk menggabungkan data dari dua tabel. LEFT JOIN akan
-    mengembalikan semua baris dari tabel kiri (tabel pertama) dan hanya
-    baris yang cocok dari tabel kanan (tabel kedua). Jika tidak ada
-    kecocokan, kolom dari tabel kanan akan diisi dengan nilai NULL.
+2.  **LEFT JOIN (atau LEFT OUTER JOIN)** adalah jenis join dalam SQL
+    yang digunakan untuk menggabungkan data dari dua tabel. LEFT JOIN
+    akan mengembalikan semua baris dari tabel kiri (tabel pertama) dan
+    hanya baris yang cocok dari tabel kanan (tabel kedua). Jika tidak
+    ada kecocokan, kolom dari tabel kanan akan diisi dengan nilai NULL.
 
-    ![](images/bs9.jpg)
+```{r, echo=TRUE}
+query_left <- "
+SELECT Mahasiswa.id, Mahasiswa.nama, jurusan.nama_jurusan
+FROM Mahasiswa
+LEFT JOIN jurusan
+ON Mahasiswa.id = jurusan.id;
+"
 
-4.  RIGHT JOIN (atau RIGHT OUTER JOIN) adalah jenis join dalam SQL yang
-    mengembalikan semua baris dari tabel kanan (tabel kedua) dan hanya
-    baris yang cocok dari tabel kiri (tabel pertama). Jika tidak ada
-    kecocokan, kolom dari tabel kiri akan diisi dengan nilai NULL.
+# Eksekusi query
+result_left <- dbGetQuery(basis, "DESCRIBE Mahasiswa")
+print(result_left)
+```
 
-    ![](images/bs10.jpg)
+3.  **RIGHT JOIN (atau RIGHT OUTER JOIN)** adalah jenis join dalam SQL
+    yang mengembalikan semua baris dari tabel kanan (tabel kedua) dan
+    hanya baris yang cocok dari tabel kiri (tabel pertama). Jika tidak
+    ada kecocokan, kolom dari tabel kiri akan diisi dengan nilai NULL.
 
-5.  FULL OUTER JOIN adalah jenis join dalam SQL yang mengembalikan semua
-    baris dari kedua tabel, baik yang memiliki kecocokan maupun yang
-    tidak.
+```{r, echo=TRUE}
+query5 <- "
+SELECT Mahasiswa.id, Mahasiswa.nama, jurusan.nama_jurusan
+FROM Mahasiswa
+RIGHT JOIN jurusan
+ON Mahasiswa.id = jurusan.id;
+"
 
-    ![](images/bs11.jpg)
+# Eksekusi query
+result_right <- dbGetQuery(basis, "DESCRIBE Mahasiswa")
+print(result_right)
+```
 
-    UNION menggabungkan hasil dari LEFT JOIN dan RIGHT JOIN untuk
-    menghasilkan efek seperti FULL OUTER JOIN. Union Digunakan untuk
-    menggabungkan hasil dari 2 atau lebih perintah Select.
+4.  **FULL OUTER JOIN** adalah jenis join dalam SQL yang mengembalikan
+    semua baris dari kedua tabel, baik yang memiliki kecocokan maupun
+    yang tidak.
+
+```{r, echo=TRUE}
+query_full_outer <- "
+SELECT Mahasiswa.id, Mahasiswa.nama, jurusan.nama_jurusan
+FROM Mahasiswa
+LEFT JOIN jurusan
+ON Mahasiswa.id = jurusan.id
+UNION
+SELECT Mahasiswa.id, Mahasiswa.nama, jurusan.nama_jurusan
+FROM Mahasiswa
+RIGHT JOIN jurusan
+ON Mahasiswa.id = jurusan.id;
+"
+result_full_outer <- dbGetQuery(basis, "DESCRIBE Mahasiswa")
+print(result_full_outer)
+```
+
+```         
+**UNION** menggabungkan hasil dari LEFT JOIN dan RIGHT JOIN untuk
+menghasilkan efek seperti FULL OUTER JOIN. Union Digunakan untuk
+menggabungkan hasil dari 2 atau lebih perintah Select.
+```
 :::
 
 ## Tipe Data
@@ -237,65 +402,66 @@ Tipe data adalah suatu bentuk pemodelan data yang dideklarasikan pada
 saat melakukan pembuatan tabel. Tipe data akan mempengaruhi setiap data
 yang akan dimasukkan ke dalam tabel, data yang dimasukkan harus sesuai
 dengan tipe data yang dideklarasikan. di MySQL ada beberapa tipe data,
-yaitu:[[6]](https://repository.dinus.ac.id/docs/ajar/materi_1.pdf)
+yaitu:
 
-1.  Tipe Data untuk Bilangan (Number)
+1.  **Tipe Data untuk Bilangan (Number)**
 
-|                                     Type Data                                      |                                             Keterangan                                             |
-|:-------------:|:-------------------------------------------------------:|
-|                                      TINYINT                                       | Ukuran 1 byte. Bilangan bulat terkecil, dengan jangkauan untuk bilangan bertanda: -128 s/d 127 dan |
-| untuk yang tidak bertanda : 0 s/d 255. Bilangan tak bertandai dengan kata UNSIGNED |                                                                                                    |
-|                                      SMALLINT                                      |   Ukuran 2 Byte. Bilangan bulat dengan jangkauan untuk bilangan bertanda : -32768 s/d 32767 dan    |
-|                      untuk yang tidak bertanda : 0 s/d 65535                       |                                                                                                    |
-|                                     MEDIUMINT                                      | Ukuran 3 byte. Bilangan bulat dengan jangkauan untuk bilangan bertanda : -8388608 s/d 8388607 dan  |
-|                     untuk yang tidak bertanda : 0 s/d 16777215                     |                                                                                                    |
-|                                        INT                                         |      Ukuran 4 byte. Bilangan bulat dengan jangkauan untuk bilangan bertanda : -2147483648 s/d      |
-|            2147483647 dan untuk yang tidak bertanda : 0 s/d 4294967295             |                                                                                                    |
-|                                      INTEGER                                       |                                  Ukuran 4 byte. Sinonim dari int                                   |
-|                                       BIGINT                                       |         Ukuran 8 byte. Bilangan bulat terbesar dengan jangkauan untuk bilangan bertanda :          |
+| Type Data |                                                                                        Keterangan                                                                                        |
+|:----------:|:----------------------------------------------------------:|
+|  TINYINT  |        Ukuran 1 byte. Bilangan bulat terkecil, dengan jangkauan untuk bilangan bertanda: -128 s/d 127 dan untuk yang tidak bertanda : 0 s/d 255. Bilangan tak bertandai dengan ka        |
+|           |                                                                                                                                                                                          |
+| SMALLINT  |                          Ukuran 2 Byte. Bilangan bulat dengan jangkauan untuk bilangan bertanda : -32768 s/d 32767 dan untuk yang tidak bertanda : 0 s/d 65535                           |
+|           |                                                                                                                                                                                          |
+| MEDIUMINT |                       Ukuran 3 byte. Bilangan bulat dengan jangkauan untuk bilangan bertanda : -8388608 s/d 8388607 dan untuk yang tidak bertanda : 0 s/d 16777215                       |
+|           |                                                                                                                                                                                          |
+|    INT    |                   Ukuran 4 byte. Bilangan bulat dengan jangkauan untuk bilangan bertanda : -2147483648 s/d 2147483647 dan untuk yang tidak bertanda : 0 s/d 4294967295                   |
+|           |                                                                                                                                                                                          |
+|  INTEGER  |                                                                             Ukuran 4 byte. Sinonim dari int                                                                              |
+|  BIGINT   | Ukuran 8 byte. Bilangan bulat terbesar dengan jangkauan untuk bilangan bertanda : -9223372036854775808 s/d 9223372036854775807 dan untuk yang tidak bertanda : 0 s/d 1844674473709551615 |
 
 ```         
-                  -9223372036854775808 s/d 9223372036854775807 dan untuk 
-                  yang tidak bertanda : 0 s/d 1844674473709551615               |
+                              
 ```
 
-|      FLOAT \| Ukuran 4 byte. Bilangan pecahan \|
-|     DOUBLE \| Ukuran 8 byte. Bilangan pecahan \|
-| DOUBLEPRECISION \| Ukuran 8 byte. Bilangan pecahan \|
-|      REAL \| Ukuran 8 byte. Sinonim dari DOUBLE \|
-|  DECIMAL (M,D) \| Ukuran M byte. Bilangan pecahan, misalnya DECIMAL(5,2 dapat digunakan untuk menyimpan bilangan -99,99 s/d 99,99 \|
-|  NUMERIC (M,D) \| Ukuran M byte. Sinonim dari DECIMAL, misalnya NUMERIC(5,2) dapat digunakan untuk menyimpan bilangan -99,99 s/d 99,99 \|
+|    Type Data    |                                                      Keterangan                                                      |
+|:------------:|:-------------------------------------------------------:|
+|      FLOAT      |                                           Ukuran 4 byte. Bilangan pecahan                                            |
+|     DOUBLE      |                                           Ukuran 8 byte. Bilangan pecahan                                            |
+| DOUBLEPRECISION |                                           Ukuran 8 byte. Bilangan pecahan                                            |
+|      REAL       |                                          Ukuran 8 byte. Sinonim dari DOUBLE                                          |
+|  DECIMAL (M,D)  |   Ukuran M byte. Bilangan pecahan, misalnya DECIMAL(5,2 dapat digunakan untuk menyimpan bilangan -99,99 s/d 99,99    |
+|  NUMERIC (M,D)  | Ukuran M byte. Sinonim dari DECIMAL, misalnya NUMERIC(5,2) dapat digunakan untuk menyimpan bilangan -99,99 s/d 99,99 |
 
-2.  Tipe Data untuk Tanggal dan Jam
+2.  **Tipe Data untuk Tanggal dan Jam**
 
-|         Type Data         |                                      Keterangan                                       |
-|:------------:|:--------------------------------------------------------:|
-|         DATETIME          | Ukuran 8 byte. Kombinasi tanggal dan jam, dengan jangkauan dari '1000-01-01 00:00:00' |
-| s/d '9999-12-31 23:59:59' |                                                                                       |
-|           DATE            |      Ukuran 3 Byte. Tanggal dengan jangkauan dari '1000-01-01' s/d '9999-12-31'       |
-|         TIMESTAMP         | Ukuran 4 byte. Kombinasi tanggal dan jam, dengan jangkauan dari '1970-01-01 00:00:00' |
-|        s/d '2037'         |                                                                                       |
-|           TIME            |        Ukuran 3 byte. Waktu dengan jangkauan dari '839:59:59' s/d '838:59:59'         |
-|           YEAR            |                    Ukuran 1 byte. Data tahun antara 1901 s/d 2155                     |
+| Type Data |                                                   Keterangan                                                    |
+|:-----------:|:---------------------------------------------------------:|
+| DATETIME  | Ukuran 8 byte. Kombinasi tanggal dan jam, dengan jangkauan dari '1000-01-01 00:00:00' s/d '9999-12-31 23:59:59' |
+|           |                                                                                                                 |
+|   DATE    |                   Ukuran 3 Byte. Tanggal dengan jangkauan dari '1000-01-01' s/d '9999-12-31'                    |
+| TIMESTAMP |        Ukuran 4 byte. Kombinasi tanggal dan jam, dengan jangkauan dari '1970-01-01 00:00:00' s/d '2037'         |
+|           |                                                                                                                 |
+|   TIME    |                     Ukuran 3 byte. Waktu dengan jangkauan dari '839:59:59' s/d '838:59:59'                      |
+|   YEAR    |                                 Ukuran 1 byte. Data tahun antara 1901 s/d 2155                                  |
 
-3.  Tipe Data untuk Karakter
+3.  **Tipe Data untuk Karakter**
 
-|                              Type Data                               |                                   Keterangan                                   |
-|:----------------------:|:----------------------------------------------:|
-|                                 CHAR                                 |  Mampu menangani data hingga 255 karakter. Tipe data CHAR mengharuskan untuk   |
-|           memasukkan data yang telah ditentukan oleh kita.           |                                                                                |
-|                               VARCHAR                                | Mampu menangani data hingga 255 karakter. Tipe data VARCHAR tidak mengharuskan |
-|        untuk memasukkan data yang telah ditentukan oleh kita.        |                                                                                |
-|                          TINYBLOB, TINYTEXT                          |           Ukuran 255 byte. Mampu menangani data sampai 2\^8-1 data.            |
-|                              BLOB, TEXT                              |        Ukuran 65535 byte. Type string yang mampu menangani data hingga         |
-|                        2\^16-1 (16M-1) data.                         |                                                                                |
-|                        MEDIUMBLOB, MEDIUMTEXT                        |     Ukuran 16777215 byte. Mampu menyimpan data hingga 2\^24-1 (16M-1)data.     |
-|                          LONGBLOB, LONGTEXT                          |    Ukuran 4294967295 byte. Mampu menyimpan data hingga berukuran GIGA BYTE.    |
-| Tipe data ini memiliki batas penyimpanan hingga 2\^32-1 (4G-1) data. |                                                                                |
-|                 ENUM('nilai1','nilai2',...,'nilaiN')                 |           Ukuran 1 atau 2 byte. Tergantung jumlah nilai enumerasinya           |
-|                        (maksimum 65535 nilai)                        |                                                                                |
-|                 SET('nilai1','nilai2',...,'nilaiN')                  |            1,2,3,4 atau 8 byte, tergantung jumlah anggota himpunan             |
-|                        (maksimum 64 anggota)                         |                                                                                |
+|              Type Data               |                                                                  Keterangan                                                                   |
+|:---------------:|:-----------------------------------------------------:|
+|                 CHAR                 |         Mampu menangani data hingga 255 karakter. Tipe data CHAR mengharuskan untuk memasukkan data yang telah ditentukan oleh kita.          |
+|                                      |                                                                                                                                               |
+|               VARCHAR                |     Mampu menangani data hingga 255 karakter. Tipe data VARCHAR tidak mengharuskan untuk memasukkan data yang telah ditentukan oleh kita.     |
+|                                      |                                                                                                                                               |
+|          TINYBLOB, TINYTEXT          |                                           Ukuran 255 byte. Mampu menangani data sampai 2\^8-1 data.                                           |
+|              BLOB, TEXT              |                             Ukuran 65535 byte. Type string yang mampu menangani data hingga 2\^16-1 (16M-1) data.                             |
+|                                      |                                                                                                                                               |
+|        MEDIUMBLOB, MEDIUMTEXT        |                                    Ukuran 16777215 byte. Mampu menyimpan data hingga 2\^24-1 (16M-1)data.                                     |
+|          LONGBLOB, LONGTEXT          | Ukuran 4294967295 byte. Mampu menyimpan data hingga berukuran GIGA BYTE. Tipe data ini memiliki batas penyimpanan hingga 2\^32-1 (4G-1) data. |
+|                                      |                                                                                                                                               |
+| ENUM('nilai1','nilai2',...,'nilaiN') |                               Ukuran 1 atau 2 byte. Tergantung jumlah nilai enumerasinya (maksimum 65535 nilai)                               |
+|                                      |                                                                                                                                               |
+| SET('nilai1','nilai2',...,'nilaiN')  |                                 1,2,3,4 atau 8 byte, tergantung jumlah anggota himpunan (maksimum 64 anggota)                                 |
+|                                      |                                                                                                                                               |
 :::
 
 # BAB III : Data Base Management System (DBMS)
@@ -303,13 +469,12 @@ yaitu:[[6]](https://repository.dinus.ac.id/docs/ajar/materi_1.pdf)
 ## Pengenalan
 
 ::: {style="text-align: justify;"}
-Database Management System (DBMS) DBMS adalah perangkat lunak yang
+**Database Management System (DBMS)** adalah perangkat lunak yang
 memungkinkan pemakai untuk mendefinisikan, mengelola, dan mengontrol
 akses ke basis data. DBMS yang mengelola basis data relational disebut
 dengan Relational DBMS (RDBMS).Contoh perangkat lunak yang termasuk
 DBMS: dBase, FoxBase, Rbase, Microsoft-Access, Borland Paradox / Borland
-Interbase, MS-SQL Server, Oracle, Informix, Sybase, MySQL,
-dll.[[7]](http://library.binus.ac.id/eColls/eThesisdoc/Bab2HTML/2012201344SIBab2001/body.html)
+Interbase, MS-SQL Server, Oracle, Informix, Sybase, MySQL, dll.
 :::
 
 ## Bahasa
@@ -317,8 +482,7 @@ dll.[[7]](http://library.binus.ac.id/eColls/eThesisdoc/Bab2HTML/2012201344SIBab2
 ::: {style="text-align: justify;"}
 **Structure Query Language (SQL)** adalah bahasa standar basis data yang
 digunakan aplikasi atau pemakai untuk berinteraksi dengan basis data
-melalui
-DBMS.[[6]](https://repository.dinus.ac.id/docs/ajar/materi_1.pdf)
+melalui DBMS.
 
 SQL dibagi menjadi dua, yaitu:
 
@@ -335,7 +499,27 @@ SQL dibagi menjadi dua, yaitu:
         telah dibuat, baik menambah field, mengganti nama field, ataupun
         menamakannya kembali dan menghapus field
 
-        ![](images/Screenshot%202024-12-07%20191040.png){width="336"}
+```{r, echo=TRUE}
+#CREATE
+tbl_mhs <- "
+CREATE TABLE mahasiswa (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama VARCHAR(100),
+    asal VARCHAR(100)
+);
+"
+print(tbl_mhs)
+
+#DROP
+dbExecute(basis, "DROP TABLE jurusan")
+
+#ALTER
+# Menambahkan kolom alamat ke tabel mahasiswa
+dbExecute(basis, "ALTER TABLE mahasiswa ADD COLUMN alamat VARCHAR(100)")
+
+# Mengubah nama kolom alamat menjadi alamat_rumah
+dbExecute(basis, "ALTER TABLE mahasiswa CHANGE COLUMN alamat alamat_rumah VARCHAR(100)")
+```
 
 2.  ***Data Manipulation Language*** ***(DML)***
 
@@ -351,9 +535,37 @@ SQL dibagi menjadi dua, yaitu:
 
     3.  Delete : Digunakan untuk penghapusan data pada Tabel Database
 
-        ![](images/Screenshot%202024-12-07%20193136.png){width="340"}
+```{r, echo=TRUE}
+#INSERT
+#MEMASUKAN DATA KE DALAM TABEL
+tbl_mhs_nw <- "
+INSERT INTO mahasiswa (id, nama, asal)
+VALUES (1001, 'Asep','Serang'),
+VALUES (1002, 'Beben', 'Serang'),
+VALUES (1003, 'Chintia', 'Cilegon'),
+VALUES (1004, 'Dadang', 'Tangerang'),
+VALUES (1005, 'Edi', null),
+VALUES (1006, 'Feby', 'Pandeglang'),
+VALUES (1007, 'Gempita', null),
+VALUES (1008, 'Helga', 'Cilegon');
+"
+print(tbl_mhs_nw)
 
-3.  Data Control Languange (DCL)
+#UPDATE
+#MENGUPDATE DATA PADA TABEL
+query <- "
+UPDATE mahasiswa
+SET asal = 'Lebak'
+WHERE id IN (1005, 1007);
+"
+print(query)
+
+#DELETE
+#Menghapus data mahasiswa dengan nim 1001
+dbExecute(basis, "DELETE FROM mahasiswa WHERE id = 1001")
+```
+
+3.  ***Data Control Languange*** ***(DCL)***
 
     DCL adalah sebuah metode Query SQL yang digunakan untuk memberikan
     hak otorisasi mengakses Database, mengalokasikan space,
@@ -369,15 +581,38 @@ SQL dibagi menjadi dua, yaitu:
 
     4.  Rollback : Membatalkan penyimpanan Database
 
-        ![](images/Screenshot%202024-12-07%20193227.png){width="339"}
+```{r, echo=TRUE}
+#GRANT
+# Memberikan hak SELECT kepada user1 untuk tabel mahasiswa
+dbExecute(basis, "GRANT SELECT ON be19.Mahasiswa TO 'root'@'localhost'")
+
+#REVOKE
+# Mencabut hak SELECT dari user1 pada tabel mahasiswa
+dbExecute(basis, "REVOKE SELECT ON be19.Mahasiswa FROM 'root'@'localhost'")
+
+#COMMIT
+# Mulai transaksi
+dbBegin(basis)
+
+# Operasi pertama: menambah data
+dbExecute(basis, "INSERT INTO Mahasiswa (nama, asal) VALUES ('Fabian', 'Yogyakarta')")
+
+# Operasi kedua: update data
+dbExecute(basis, "UPDATE Mahasiswa SET asal = 'Bali' WHERE nama = 'Dewa'")
+
+# Jika operasi berhasil, lakukan COMMIT
+dbCommit(basis)
+
+#ROLLBACK
+dbExecute(basis, "ROLLBACK")
+```
 :::
 
 ## Komponen DBMS
 
 ::: {style="text-align: justify;"}
 Menurut Connolly dan Begg (2010:68-71), ada 5 komponen utama dari
-lingkungan DBMS: Hardware, Software, Data, Prosedur, dan
-People.[[7]](http://library.binus.ac.id/eColls/eThesisdoc/Bab2HTML/2012201344SIBab2001/body.html)
+lingkungan DBMS: Hardware, Software, Data, Prosedur, dan People.
 
 1.  **Hardware**
 
@@ -441,7 +676,7 @@ People.[[7]](http://library.binus.ac.id/eColls/eThesisdoc/Bab2HTML/2012201344SIB
             untukkepuasan pengguna.
 :::
 
-## Kelebihan [[8]](https://repository.nusamandiri.ac.id/repo/files/227362/download/Modul-SistemBasis-Data.pdf)
+## Kelebihan
 
 -   Mengurangi pengulangan data
 
@@ -457,10 +692,9 @@ People.[[7]](http://library.binus.ac.id/eColls/eThesisdoc/Bab2HTML/2012201344SIB
 
 ::: {style="text-align: justify;"}
 Menurut Conolly dan begg (2010:80-81), Database Management System (DBMS)
-memiliki kekurangan, berikut ini merupakan kekurangan DBMS antara
-lain:[[7]](http://library.binus.ac.id/eColls/eThesisdoc/Bab2HTML/2012201344SIBab2001/body.html)
+memiliki kekurangan, berikut ini merupakan kekurangan DBMS antara lain:
 
-a\. Kompleks
+a\. **Kompleks**
 
 DBMS merupakan bagian dari perangkat lunak yang sangat
 kompleks.Kesalahan terhadap pengertian sistemakan megakibatkan rancangan
@@ -469,32 +703,32 @@ dan pengembang basis data, databaseadministrator (DBA) serta
 end-userperlu mengerti tentang keuntungan fungsional DBMS terlebih
 dahulu.
 
-b\. Ukuran
+b\. **Ukuran**
 
 Kompleksitas dan banyaknya kegunaan dari DBMS menjadikannya
 sebagaiperangkat lunak yang sangat besar, sehingga memerlukan tempat
 penyimpanan datayang besar dan juga membutuhkan memori yang cukup agar
 bisa berjalan secaraefisien.
 
-c\. Biaya
+c\. **Biaya**
 
 Biaya yang dikeluarkan untuk DBMS sangat bervariasi, tergantung dari
 lingkungandan kegunaan yang disediakan oleh DBMS tersebut.
 
-d\. Biaya tambahan untuk perangkat keras
+d\. **Biaya tambahan untuk perangkat keras**
 
 Kebutuhan tempat penyimpanan data untuk DBMS dan basis data
 mungkinmengharuskan pembelian tempat khusus penyimpanan data tambahan.
 
-e\. Biaya Konversi
+e\. **Biaya Konversi**
 
 Dalam situasi tertentu, biaya untk DBMS dan perangkat keras tambahan
 dapatmenjadi penting dibanng dengan biaya konversi dari aplikasi yang
 sudah ada agar dapatberjalan di DBMS dan perangkat keras baru.
 
-f\. Performa
+f\. **Performa**
 
-g\. Kemungkinan gagal yang tinggi
+g\. **Kemungkinan gagal yang tinggi**
 
 Pemusatan dari sumber daya meningkatkan kerentanan sistemyang disebabkan
 olehsemua pemakai dan aplikasi bergantung pada ketersediaan dari DBMS,
@@ -506,15 +740,15 @@ kegagalan darisalah satu komponen dapat membuat operasi terhent
 ## Pengenalan
 
 ::: {style="text-align: justify;"}
-Entity Relationship Diagram adalah salah satu alat penting dalam
-pengembangan sistem infromasi, khususnya dalma perancangan basis data.
-ERD membantu mengilustrasikan hubungan antara entitas-entitas dalam
-sebuah sistem, memfasilitasi pemahaman yang lebih baik tentang struktur
-data dan interaksi antar komponen. ERD adalah representasi visual dari
-struktur basis dayang yang menggambarkan entitas, atribut dan hubungan
-antar entitas tersebut. entitas dapat diartikan sebagai objek atau
-konsep yang dapat dibedakan dan memiliki data yang disimpan dalam basis
-data.[[9]](http://library.binus.ac.id/eColls/eThesisdoc/Bab2HTML/2012201344SIBab2001/body.html)
+**Entity Relationship Diagram (ERD)** adalah salah satu alat penting
+dalam pengembangan sistem infromasi, khususnya dalma perancangan basis
+data. ERD membantu mengilustrasikan hubungan antara entitas-entitas
+dalam sebuah sistem, memfasilitasi pemahaman yang lebih baik tentang
+struktur data dan interaksi antar komponen. ERD adalah representasi
+visual dari struktur basis dayang yang menggambarkan entitas, atribut
+dan hubungan antar entitas tersebut. entitas dapat diartikan sebagai
+objek atau konsep yang dapat dibedakan dan memiliki data yang disimpan
+dalam basis data.
 :::
 
 ## Model Data ERD
@@ -522,129 +756,131 @@ data.[[9]](http://library.binus.ac.id/eColls/eThesisdoc/Bab2HTML/2012201344SIBab
 ::: {style="text-align: justify;"}
 Sebelum mmebuat perancangan sistem yang tepat, harus terlebih dahulu
 mengetahui jenis model data yang digunakan. Karena model data tersebut
-dapat berpengaruh dalma pengembangan
-sistem.[[9]](http://library.binus.ac.id/eColls/eThesisdoc/Bab2HTML/2012201344SIBab2001/body.html)
+dapat berpengaruh dalma pengembangan sistem.
 
-1.  Model Data Konseptual Adalah model data paling tinggi karena di
+1.  **Model Data Konseptual** Adalah model data paling tinggi karena di
     dalamnya berisi data-data yang detail. Data konseptual ini dapat
     digunakan sebagai dasar untuk membuat satu atau lebih model data
     logis. Tujuan dari pengembangan model data konseptual adalah untuk
     memberikan gambaran yang jelas mengenaik struktur database yang
     terdiri dari entitas dan relasi antar setiap entitas.
 
-2.  Model Data Logis Adalah pengembangan dari model data konseptual, itu
-    sebabnya dalam proses pembuatannya model data ini dibuat lebih rinci
-    dari model data konseptual dan dibuat setelah model data konseptual
-    selesai dibuat. Model ini digunakan untuk menambah infromasi secara
-    eksplisit kedalam unsur-unsur model konseptual.
+2.  **Model Data Logis** Adalah pengembangan dari model data konseptual,
+    itu sebabnya dalam proses pembuatannya model data ini dibuat lebih
+    rinci dari model data konseptual dan dibuat setelah model data
+    konseptual selesai dibuat. Model ini digunakan untuk menambah
+    infromasi secara eksplisit kedalam unsur-unsur model konseptual.
 
-3.  Model Data Fisik Adalah pengembangan dari masing-masing model data
-    logis. Model data ini biasanya digunakan untuk merancang sebuah
+3.  **Model Data Fisik** Adalah pengembangan dari masing-masing model
+    data logis. Model data ini biasanya digunakan untuk merancang sebuah
     database.
 :::
 
-## Simbol-simbol [[8]](https://repository.nusamandiri.ac.id/repo/files/227362/download/Modul-SistemBasis-Data.pdf)
+## Simbol-simbol
 
-![](images/Screenshot%202024-12-05%20154344.png)
+![](images/Screenshot%202024-12-15%20114149.png){width="501"}
 
-## Komponen [[9]](https://binus.ac.id/bekasi/2024/07/mengenal-entity-relationship-diagram/)
+## Komponen
 
 ::: {style="text-align: justify;"}
-1.  Entitas (Entity): Merupakan objek utama dalam ERD yang
+1.  **Entitas** ***(Entity)***: Merupakan objek utama dalam ERD yang
     merepresentasikan kumpulan objek atau konsep yang memiliki
     karakteristik sama. Entitas digambarkan dengan persegi panjang dan
     diberi nama sesuai dengan objek yang diwakilinya, misalnya,
     "Mahasiswa" atau "Mata Kuliah".
-2.  Atribut (Attributes): Merupakan ciri-ciri atau informasi yang
-    dimiliki oleh entitas. Atribut digambarkan dengan elips dan
+2.  **Atribut** ***(Attributes)***: Merupakan ciri-ciri atau informasi
+    yang dimiliki oleh entitas. Atribut digambarkan dengan elips dan
     dihubungkan dengan entitas yang bersangkutan. Misalnya, entitas
     "Mahasiswa" mungkin memiliki atribut seperti "Nama", "NIM", dan
     "Tanggal Lahir".
-3.  Hubungan (Relationships): Menunjukkan bagaimana entitas-entitas
-    tersebut berinteraksi satu sama lain. Hubungan ini digambarkan
-    dengan bentuk berlian dan diberi nama yang mendeskripsikan hubungan
-    tersebut, misalnya "Meminjam" antara entitas "Mahasiswa" dan "Buku".
-4.  Kardinalitas (Cardinality): Menunjukkan jumlah maksimum entitas yang
-    dapat berhubungan dengan entitas lainnya dalam hubungan tertentu.
-    Kardinalitas biasanya dinyatakan dalam bentuk angka atau simbol
-    seperti 1:1 (satu ke satu), 1:N (satu ke banyak), atau N:N (banyak
-    ke banyak).
+3.  **Hubungan** ***(Relationships)***: Menunjukkan bagaimana
+    entitas-entitas tersebut berinteraksi satu sama lain. Hubungan ini
+    digambarkan dengan bentuk berlian dan diberi nama yang
+    mendeskripsikan hubungan tersebut, misalnya "Meminjam" antara
+    entitas "Mahasiswa" dan "Buku".
+4.  **Kardinalitas** ***(Cardinality)***: Menunjukkan jumlah maksimum
+    entitas yang dapat berhubungan dengan entitas lainnya dalam hubungan
+    tertentu. Kardinalitas biasanya dinyatakan dalam bentuk angka atau
+    simbol seperti 1:1 (satu ke satu), 1:N (satu ke banyak), atau N:N
+    (banyak ke banyak).
 :::
 
-## Entity Set [[8]](https://repository.nusamandiri.ac.id/repo/files/227362/download/Modul-SistemBasis-Data.pdf)
+## Entity Set
 
-1\. Strong entity set yaitu entity set yang satu atau lebih atributnya
-digunakan oleh entity set lain sebagai key.
+1.  **Strong entity set** yaitu entity set yang satu atau lebih
+    atributnya digunakan oleh entity set lain sebagai key.
 
-![](images/Screenshot%202024-12-05%20165731.png)
+![](images/Screenshot%202024-12-05%20165731.png){width="339"}
 
-2.  Weak Entity set, Entity set yang bergantung terhadap strong entity
-    set. Digambarkan dengan empat persegi panjang bertumpuk.
+2.  **Weak Entity set**, Entity set yang bergantung terhadap strong
+    entity set. Digambarkan dengan empat persegi panjang bertumpuk.
 
-![](images/Screenshot%202024-12-05%20172035.png)
+![](images/Screenshot%202024-12-05%20172035.png){width="407"}
 
-## Jenis-jenis Atribut [[10]](https://math.fmipa.unmul.ac.id/nanda/sbd.pdf)
+## Jenis-jenis Atribut
 
 ::: {style="text-align: justify;"}
-1.  Atribut sederhana adalah atribut atomik yang tidak dapat dipilah
+1.  **Atribut sederhana** adalah atribut atomik yang tidak dapat dipilah
     lagi. Contohnya adalah jenis kelamin dan jurusan.
-2.  Atribut komposit adalah atribut yang masih dapat diuraikan lagi
+2.  **Atribut komposit** adalah atribut yang masih dapat diuraikan lagi
     menjadi sub-sub atribut yang masing-masing memiliki makna. Sebagai
     contoh, pada atribut Nama dapat diuraikan menjadi nama depan, nama
     tengah, nama belakang. Contoh lainnya adalah atribut alamat (nama
     jalan, nomor rumah, kota).
-3.  Atribut bernilai tunggal adalah atribut yang hanya memiliki maksimal
-    satu nilai di tiap datanya. Contohnya NIM, nama, dan tanggal lahir.
-4.  Atribut bernilai banyak adalah atribut yang dapat diisi lebih dari
-    satu nilai. Misalnya hobby dan nomor handphone.
-5.  Atribut harus bernilai (mandatory attribute) adalah atribut yang
-    harus berisi suatu data. Contohnya adalah NIM, nama mahasiswa, dan
-    alamat.
-6.  Atribut nilai null adalah atribut yang belum memiliki nilai. Dalam
-    hal ini, null artinya kosong. Contohnya, pada atribut Hobi_mhs untuk
-    entitas mahasiswa bernama Eka yang memang tidak memiliki hobby.
-    Atribut null juga dapat diartikan bahwa datany belum siap atau masih
-    meragukan.
-7.  Atribut turunan adalah atribut yang nilainya dapat diturunkan dari
-    atribut lainnya. Atribut turunan sebenarnya hanya digunakan sebagai
-    penjelas dan dapat ditiadakan. Contoh atribut turunan adalah
+3.  **Atribut bernilai tunggal** adalah atribut yang hanya memiliki
+    maksimal satu nilai di tiap datanya. Contohnya NIM, nama, dan
+    tanggal lahir.
+4.  **Atribut bernilai banyak** adalah atribut yang dapat diisi lebih
+    dari satu nilai. Misalnya hobby dan nomor handphone.
+5.  **Atribut harus bernilai** ***(mandatory attribute)*** adalah
+    atribut yang harus berisi suatu data. Contohnya adalah NIM, nama
+    mahasiswa, dan alamat.
+6.  **Atribut nilai null** adalah atribut yang belum memiliki nilai.
+    Dalam hal ini, null artinya kosong. Contohnya, pada atribut Hobi_mhs
+    untuk entitas mahasiswa bernama Eka yang memang tidak memiliki
+    hobby. Atribut null juga dapat diartikan bahwa datany belum siap
+    atau masih meragukan.
+7.  **Atribut turunan** adalah atribut yang nilainya dapat diturunkan
+    dari atribut lainnya. Atribut turunan sebenarnya hanya digunakan
+    sebagai penjelas dan dapat ditiadakan. Contoh atribut turunan adalah
     angkatan. Nilai-nilai pada atribut angkatan dapat diketahui dari
     atribut nim (biasanya dua karakter pertama dalam nim menyatakan dua
     digit bilangan tahun masuknya mahasiswa yang bersangkutan). Contoh
     atribut turunan lainnya adalah atribut indeks prestasi yang dapat
     diperoleh dari hasil perhitungan nilai.
-8.  Primary key adalah atribut yang dapat membedakan data satu dengan
-    data yang lainnya dalam suatu entitas. Contohnya adalah NIM, Kode
-    makanan, dan Kode barang. Fungsi penggunaan Primary Key adalah untuk
-    membedakan data satu dengan data yang lainnya.
+8.  **Primary key** adalah atribut yang dapat membedakan data satu
+    dengan data yang lainnya dalam suatu entitas. Contohnya adalah NIM,
+    Kode makanan, dan Kode barang. Fungsi penggunaan Primary Key adalah
+    untuk membedakan data satu dengan data yang lainnya.
 
 ![](images/Screenshot%202024-12-06%20135136.png)
 :::
 
-## Mapping Cardinality [[10]](https://math.fmipa.unmul.ac.id/nanda/sbd.pdf)
+## Mapping Cardinality
 
 ::: {style="text-align: justify;"}
-Kardinalitas atau derajat relasi adalah jumlah maksimum entitas yang
+**Kardinalitas atau derajat relasi** adalah jumlah maksimum entitas yang
 dapat berelasi pada entitas lainnya. Jika diberikan dua himpunan entitas
 (yaitu A dan B), maka kardinalitas relasinya dibedakan menjadi 4 jenis,
 yaitu:
 
-1.  Satu ke Satu (One to One), yang berarti satu entitas A berhubungan
-    paling banyak satu dengan entitas B. Begitupun sebaliknya, satu
-    entitas pada himpunan B berhubungan paling banyak satu dengan
-    entitas A.
+1.  **Satu ke Satu** ***(One to One)***, yang berarti satu entitas A
+    berhubungan paling banyak satu dengan entitas B. Begitupun
+    sebaliknya, satu entitas pada himpunan B berhubungan paling banyak
+    satu dengan entitas A.
 
-    ![](images/Screenshot%202024-12-06%20143801.png)
+    ![](images/Screenshot%202024-12-06%20143801.png){width="457"}
 
-2.  Satu ke Banyak (One to Many), yang berarti satu entitas A dapat
-    berhubungan lebih dari satu dengan entitas B. Namun tidak berlaku
-    sebaliknya, dimana setiap entitas pada himpunan entitas B
+2.  **Satu ke Banyak** ***(One to Many)***, yang berarti satu entitas A
+    dapat berhubungan lebih dari satu dengan entitas B. Namun tidak
+    berlaku sebaliknya, dimana setiap entitas pada himpunan entitas B
     berhubungan dengan paling banyak dengan satu entitas pada himpunan
     entitas A.
 
-    ![](images/Screenshot%202024-12-06%20144656.png)
+    ![](images/Screenshot%202024-12-06%20144656.png){width="467"
+    height="61"}
 
-3.  Banyak ke Satu (Many to One), yang berarti satu entitas A
+3.  **Banyak ke Satu** ***(Many to One)***, yang berarti satu entitas A
     berhubungan paling banyak dengan satu entitas B. Namun tidak berlaku
     sebaliknya, dimana setiap entitas pada himpunan entitas B dapat
     berhubungan lebih dari satu dengan entitas A. Kardinalitas relasi
@@ -653,15 +889,15 @@ yaitu:
     dua sisi. Artinya, posisi himpunan entitas A dan himpunan entitas B
     dapat saja ditukar.
 
-    ![](images/Screenshot%202024-12-06%20144123.png)
+    ![](images/Screenshot%202024-12-06%20144123.png){width="486"}
 
-4.  Banyak ke Banyak (Many to Many), yang berarti satu entitas A dapat
-    berhubungan lebih dari satu dengan entitas B dan sebaliknya.
+4.  **Banyak ke Banyak** ***(Many to Many)***, yang berarti satu entitas
+    A dapat berhubungan lebih dari satu dengan entitas B dan sebaliknya.
 
-    ![](images/Screenshot%202024-12-06%20144206.png)
+    ![](images/Screenshot%202024-12-06%20144206.png){width="490"}
 :::
 
-## Langkah-langkah membuat ERD [[11]](https://spada.untirta.ac.id/course/view.php?id=25275&section=3)
+## Langkah-langkah membuat ERD
 
 ::: {style="text-align: justify;"}
 Berikut adalah tahapan dalam perancangan ERD:
@@ -671,4 +907,74 @@ Berikut adalah tahapan dalam perancangan ERD:
 3.  Tambahkan atribut pada setiap entitas, termasuk key atribut-nya
 4.  Gambar ERD dengan lengkap (entitas, atribut, relasi dan garis)
 5.  Review hasil berdasarkan keperluan databasenya
+:::
+
+## STUDY KASUS
+
+Buatlah sebuah database untuk sistem manajemen perpustakaan. Buat tabel
+bernama "buku" dengan id buku sebagai primary key.
+
+```         
+-   ID buku
+
+-   Judul buku
+
+-   Pengarang
+
+-   Tahun terbit
+
+-   Jumlah stok buku
+```
+
+Masukan data ke tabel dengan
+
+| id_buku | judul        | pengarang   | tahun_terbit | stok |
+|---------|--------------|-------------|--------------|------|
+| 1       | Pemrograman  | Andidas     | 2020         | 10   |
+| 2       | Belajar SQL  | Bram wijaya | 2021         | 5    |
+| 3       | Data Analis  | Saraswati   | 2018         | 6    |
+| 4       | RStudio      | Beni        | 2017         | 8    |
+| 5       | Data Science | Macca       | 2021         | 5    |
+| 6       | Excel        | Diandra     | 2018         | 2    |
+
+Ambil buku yang stoknya kurang dari 10,
+
+Tunjukkan hasil dari tabel buku yang terbaru.
+
+***Mengurutkan data***
+
+1.  Urutkan tabel buku berdasarkan tahun terbit pada urutan menurun.
+    Tuliskan bagaimana perintah SQLnya dan tunjukkan hasil tabel yang
+    sudah diurutkan.
+
+2.  Urutkan tabel buku berdasarkan stok dalam urutan menurun, lalu
+    semester dalam urutan menaik. Tuliskan bagaimana perintah SQLnya dan
+    tunjukkan hasil tabel yang sudah diurutkan :::
+
+**Menggabungkan Tabel**
+
+Terdapat tabel dengan data
+
+| id_peminjaman | id_buku | nama_anggota |
+|---------------|---------|--------------|
+| 1             | 1       | Dikhi        |
+| 2             | 2       | Kartika      |
+| 3             | 4       | Teguh        |
+| 4             | 3       | Iqbal        |
+| 5             | 2       | Setiawan     |
+
+::: {style="text-align: justify;"}
+1.  Berdasarkan Tabel sebelumnya buatlah query SQL untuk menampilkan
+    daftar judul buku beserta nama peminjamnya dari tabel buku dan
+    peminjaman.
+
+2.  Buatlah tabel untuk menampilkan daftar semua buku dan nama peminjam,
+    termasuk buku yang tidak dipinjam.
+
+3.  Tulislah query untuk menampilkan semua peminjaman beserta detail
+    buku yang dipinjam, termasuk peminjaman yang tidak memiliki buku
+    yang tercatat.
+
+4.  Buatkan untuk menampilkan semua peminjaman dan semua buku, meskipun
+    ada peminjaman tanpa buku atau buku tanpa peminjaman.
 :::

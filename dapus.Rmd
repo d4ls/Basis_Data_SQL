@@ -1,0 +1,13 @@
+---
+title: "Daftar Pustaka"
+output:
+  pdf_document:
+    citation_package: biblatex
+bibliography: Referensi.bib
+---
+
+```{r, include=FALSE}
+
+[@binus2024; @biznetgio2024; @codesaya2024; @dinus2024; @dqlab2024; @mulawarman2024; @nusamandiri2024; @umsu2024; @untirta2_2024; @untirta2024]
+
+```
